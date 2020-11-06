@@ -18,7 +18,6 @@ func TestSingleton(t *testing.T) {
 	}
 	c1.Singleton(&s1)
 	var s2, s3 *S
-	println(uintptr(unsafe.Pointer(&s2)))
 	c1.Make(&s2)
 	c1.Make(&s3)
 
@@ -29,6 +28,20 @@ func TestSingleton(t *testing.T) {
 	}
 
 	if uintptr(unsafe.Pointer(s2)) != uintptr(unsafe.Pointer(s3)) {
+		t.Error("[Singleton] s2 and s3 are not same address")
+	}
+
+	c1.Reset()
+
+	c1.Singleton(func() *S {
+		return &S{A: 2}
+	})
+
+	var s5, s6 *S
+	c1.Make(&s5)
+	c1.Make(&s6)
+
+	if uintptr(unsafe.Pointer(s5)) != uintptr(unsafe.Pointer(s6)) {
 		t.Error("[Singleton] s2 and s3 are not same address")
 	}
 }

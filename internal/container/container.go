@@ -82,7 +82,7 @@ func (c *container) bindFunction(resolver interface{}, resolverType reflect.Type
 
 	switch bindingType {
 	case singleton:
-		outs := make([]reflect.Value, numOut, numOut)
+		outs := invoke(c, resolver)
 		for i := 0; i < numOut; i++ {
 			c.bindings[resolverType.Out(i)] = &singletonBinding{
 				instance: outs[i].Interface(),
